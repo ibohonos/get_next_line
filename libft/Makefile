@@ -6,7 +6,7 @@
 #    By: ibohonos <marvin@42.fr>                    +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2017/10/24 16:55:15 by ibohonos          #+#    #+#              #
-#    Updated: 2017/11/25 17:04:43 by ibohonos         ###   ########.fr        #
+#    Updated: 2017/11/28 14:54:48 by ibohonos         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -15,6 +15,8 @@ NAME = libft.a
 CC = gcc
 FLAGS = -Wall -Wextra -Werror
 
+RED			= \033[31m
+RESET		= \033[0m
 OBJ_DIR		= ./obj
 SRC_DIR 	= ./srcs
 INCL_DIR 	= ./includes
@@ -35,13 +37,20 @@ SRC 		= ft_atoi.c ft_bzero.c ft_isalnum.c ft_isalpha.c ft_isascii.c \
 all: $(NAME)
 
 $(OBJ_DIR)/%.o:$(SRC_DIR)/%.c
-	$(CC) $(FLAGS) -I $(INCL_DIR) -o $@ -c $<
+	@$(CC) $(FLAGS) -I $(INCL_DIR) -o $@ -c $<
 
 $(NAME):
+	@echo "$(RED)  &&        &&  &&&&&&&&    &&&&&&&&  &&&&&&&&&&  "
+	@echo "  &&        &&  &&      &&  &&            &&      "
+	@echo "  &&        &&  &&      &&  &&            &&      "
+	@echo "  &&        &&  &&&&&&&&    &&&&&&&&      &&      "
+	@echo "  &&        &&  &&      &&  &&            &&      "
+	@echo "  &&        &&  &&      &&  &&            &&      "
+	@echo "  &&&&&&&&  &&  &&&&&&&&    &&            &&      $(RESET)"
 	@mkdir -p $(OBJ_DIR)
 	@$(MAKE) $(OBJ)
-	ar rc $(NAME) $(OBJ)
-	ranlib $(NAME)
+	@ar rc $(NAME) $(OBJ)
+	@ranlib $(NAME)
 
 clean:
 	/bin/rm -rf $(OBJ_DIR)
