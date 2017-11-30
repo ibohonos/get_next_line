@@ -6,37 +6,58 @@
 /*   By: ibohonos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 15:43:29 by ibohonos          #+#    #+#             */
-/*   Updated: 2017/11/28 16:55:08 by ibohonos         ###   ########.fr       */
+/*   Updated: 2017/11/30 19:04:37 by ibohonos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-int				get_next_line(const int fd, char **line)
+static char	*ft_join_str(char *str, int fd)
 {
-	int			ret;
-	char		*rm;
-	char		buffer[BUFF_SIZE + 1];
-	static char	*s[2147483648];
+	int		rf;
+	char	buf[BUFF_SIZE + 1];
+	char	*file;
 
-	if (!line || fd < 0 || !(s[fd] = !s[fd] ? ft_strnew(1) : s[fd]))
-		return (-1);
-	while (!ft_strchr(s[fd], '\n') && (ret = read(fd, buffer, BUFF_SIZE)) > 0)
+	while ((rf = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		rm = s[fd];
-		buffer[ret] = '\0';
-		s[fd] = ft_strjoin(s[fd], buffer);
-		free(rm);
+		file = str;
+		buf[rf] = '\0';
+		str = ft_strjoin(str, buf);
+		free(file);
 	}
-	if (ret == -1)
-		return (-1);
-	*line = (ft_strchr(s[fd], '\n') ? ft_strsub(s[fd], 0,
-				ft_strchr(s[fd], '\n') - s[fd]) : ft_strdup(s[fd]));
-	if (ft_strchr((rm = s[fd]), '\n'))
-		s[fd] = ft_strsub(s[fd], ft_strchr(s[fd], '\n') - s[fd] + 1,
-				ft_strlen(s[fd]));
+	if (rf == -1)
+		return (NULL);
+	return (str);
+}
+
+static void	ft_join_line(char *str, char **line)
+{
+	if (ft_strchr(str, '\n'))
+		*line = ft_strsub(str, 0, ft_strchr(str, '\n') - str);
 	else
-		ft_strdel(&s[fd]);
-	free(rm);
-	return (!s[fd] && ft_strlen(*line) == 0 ? 0 : 1);
+		*line = ft_strdup(str);
+}
+
+int			get_next_line(const int fd, char **line)
+{
+	static char	*str[0];
+
+	if (!line || fd < 0)
+		return (-1);
+	if (!str[fd])
+		str[fd] = ft_strnew(1);
+	if (!str[fd])
+		return (-1);
+	str[fd] = ft_join_str(str[fd], fd);
+	if (!str[fd])
+		return (-1);
+	ft_join_line(str[fd], line);
+	if (ft_strchr(str[fd], '\n'))
+		str[fd] = ft_strsub(str[fd], ft_strchr(str[fd], '\n') - str[fd] + 1,
+				ft_strlen(str[fd]));
+	else
+		ft_strdel(&str[fd]);
+	if (!str[fd] && ft_strlen(*line) == 0)
+		return (0);
+	return (1);
 }

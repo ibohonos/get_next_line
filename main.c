@@ -1,23 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ibohonos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2017/11/25 15:40:15 by ibohonos          #+#    #+#             */
-/*   Updated: 2017/11/30 18:47:54 by ibohonos         ###   ########.fr       */
+/*   Created: 2017/11/25 15:45:24 by ibohonos          #+#    #+#             */
+/*   Updated: 2017/11/30 17:30:25 by ibohonos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "get_next_line.h"
 
-# include "libft.h"
-# include <fcntl.h>
+int		main(int argc, char **argv)
+{
+	int		fd;
+	int		i;
+	char	*line;
 
-# define BUFF_SIZE 2
-
-int	get_next_line(const int fd, char **line);
-
-#endif
+	argc = 0;
+	line = NULL;
+	fd = open(argv[1], O_RDONLY);
+	while ((i = get_next_line(fd, &line)) > 0)
+	{
+		ft_putnbr(i);
+		ft_putchar('\t');
+		ft_putendl(line);
+	}
+	return (0);
+}
