@@ -6,7 +6,7 @@
 /*   By: ibohonos <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/25 15:43:29 by ibohonos          #+#    #+#             */
-/*   Updated: 2017/11/30 19:04:37 by ibohonos         ###   ########.fr       */
+/*   Updated: 2017/12/02 10:38:58 by ibohonos         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,9 +40,9 @@ static void	ft_join_line(char *str, char **line)
 
 int			get_next_line(const int fd, char **line)
 {
-	static char	*str[0];
+	static char	*str[4096];
 
-	if (!line || fd < 0)
+	if (!line || fd < 0 || fd > 4096 || BUFF_SIZE < 0)
 		return (-1);
 	if (!str[fd])
 		str[fd] = ft_strnew(1);
